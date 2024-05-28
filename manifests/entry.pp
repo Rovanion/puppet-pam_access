@@ -45,19 +45,17 @@
 #   }
 #
 define pam_access::entry (
-  $ensure     = present,
-  $permission = '+',
-  $user       = false,
-  $group      = false,
-  $origin     = 'LOCAL',
-  $position   = undef,
+  Enum['present', 'absent'] $ensure          = present,
+  Enum['+', '-'] $permission                 = '+',
+  Boolean $user                              = false,
+  Boolean $group                             = false,
+  String $origin                             = 'LOCAL',
+  Optional[Enum['after','before']] $position = undef,
 ) {
 
   include pam_access
 
   # validate params
-  validate_re($ensure, ['\Aabsent|present\Z'])
-  validate_re($permission, ['\A[+-]\Z'], "\$pam_access::entry::permission must be '+' or '-'; '${permission}' received")
   if $user and $group {
     fail("\$pam_access::entry::user and \$pam_access::entry::group can not both be set")
   }
@@ -69,7 +67,6 @@ define pam_access::entry (
       '-' => 'after',
     }
   }
-  validate_re($real_position, ['\Aafter|before|-1\Z'])
 
   Augeas {
     context => '/files/etc/security/access.conf/',

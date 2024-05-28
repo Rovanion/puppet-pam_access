@@ -18,17 +18,12 @@
 #
 # [Remember: No empty lines between comments and class definition]
 class pam_access (
-  $ensure                  = present,
-  $manage_pam              = true,
-  $enable_pamaccess_flags  = $pam_access::params::enable_pamaccess_flags,
-  $disable_pamaccess_flags = $pam_access::params::disable_pamaccess_flags,
-  $entries                 = {},
+  Enum['present', 'absent'] $ensure = present,
+  Boolean $manage_pam               = true,
+  Array $enable_pamaccess_flags     = $pam_access::params::enable_pamaccess_flags,
+  Array $disable_pamaccess_flags    = $pam_access::params::disable_pamaccess_flags,
+  Hash $entries                     = {},
 ) inherits pam_access::params {
-
-  validate_re($ensure, ['\Aabsent|present\Z'])
-  validate_bool($manage_pam)
-  validate_array($enable_pamaccess_flags, $disable_pamaccess_flags)
-  validate_hash($entries)
 
   file { '/etc/security/access.conf':
     ensure => file,
