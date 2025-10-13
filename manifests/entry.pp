@@ -47,8 +47,8 @@
 define pam_access::entry (
   Enum['present', 'absent'] $ensure          = present,
   Enum['+', '-'] $permission                 = '+',
-  Boolean $user                              = false,
-  Boolean $group                             = false,
+  Variant[Boolean, String[1]] $user          = false,
+  Variant[Boolean, String[1]] $group         = false,
   String $origin                             = 'LOCAL',
   Optional[Enum['after','before']] $position = undef,
 ) {
