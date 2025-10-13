@@ -45,12 +45,12 @@
 #   }
 #
 define pam_access::entry (
-  Enum['present', 'absent'] $ensure          = present,
-  Enum['+', '-'] $permission                 = '+',
-  Variant[Boolean, String[1]] $user          = false,
-  Variant[Boolean, String[1]] $group         = false,
-  String $origin                             = 'LOCAL',
-  Optional[Enum['after','before']] $position = undef,
+  Enum['present', 'absent'] $ensure                = present,
+  Enum['+', '-'] $permission                       = '+',
+  Variant[Boolean, String[1]] $user                = false,
+  Variant[Boolean, String[1]] $group               = false,
+  String $origin                                   = 'LOCAL',
+  Optional[Enum['after','before', '-1']] $position = undef,
 ) {
 
   include pam_access
